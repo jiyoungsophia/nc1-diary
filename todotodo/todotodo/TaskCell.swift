@@ -12,7 +12,7 @@ struct TaskCell: View {
     
     var body: some View {
         HStack {
-            Image(systemName: "circle")
+            Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
             Text("\(task.memo)")
             Spacer()
 //            Text("\(task[0].completeDate)")

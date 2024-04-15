@@ -15,26 +15,37 @@ struct TaskView: View {
             Text("\(todos[0].createDate)")
                 .foregroundStyle(.gray)
                 .frame(maxWidth: .infinity, alignment: .center)
-//            TextField(<#T##title: StringProtocol##StringProtocol#>, text: <#T##Binding<String>#>)
+            //            TextField(<#T##title: StringProtocol##StringProtocol#>, text: <#T##Binding<String>#>)
             Text("Untitled")
                 .font(.title)
                 .padding()
-                
-            
-            List(todos[0].tasks) { task in
-                TaskCell(task: task)
 
+            
+            List {
+                ForEach(todos[0].tasks) { task in
+                    TaskCell(task: task)
+                        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                            Button(role: .destructive) {
+                                print("delete")
+                            } label: {
+                                Image(systemName: "trash")
+//                                        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                            }
+
+                        }
+                }
             }
             .listStyle(.plain)
             
             Spacer()
-            Button("Add New Task", systemImage: "plus", action: {
+            Button("Add New Task", systemImage: "plus.circle.fill", action: {
                 print("add")
             })
+            .font(.title3.bold())
+            .foregroundStyle(.green)
             .padding()
         }
         .navigationBarTitleDisplayMode(.inline)
-        .background(.pink)
     }
 }
 
