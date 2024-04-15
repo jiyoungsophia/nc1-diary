@@ -17,10 +17,7 @@ struct TodoMainCell: View {
                 .font(.title2.bold())
             
             ForEach(todos.tasks) { task in
-                HStack {
-                    Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
-                    Text(task.memo)
-                }
+                TaskCell(task: task)
             }
             
             Divider()

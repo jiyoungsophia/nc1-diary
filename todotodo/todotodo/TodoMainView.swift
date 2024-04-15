@@ -7,9 +7,11 @@
 
 import SwiftUI
 
+// - TODO: task뷰 분기처리
+
 struct TodoMainView: View {
     let todos: [TodoData] = TodoData.sampleData
-    @State private var addTodo = false
+    @State private var gotoTask = false
     
     var body: some View {
         NavigationStack {
@@ -22,7 +24,7 @@ struct TodoMainView: View {
                     Spacer()
                     
                     Button{
-                        addTodo = true
+                        gotoTask = true
                     } label: {
                         Image(systemName: "plus")
                             .font(.title)
@@ -31,9 +33,7 @@ struct TodoMainView: View {
                     
                 }
                 .padding([.horizontal, .top])
-                .navigationDestination(isPresented: $addTodo) {
-                    TaskView()
-                }
+                
                 
                 List {
                     ForEach(todos) { todo in
@@ -44,39 +44,33 @@ struct TodoMainView: View {
                                     print("delete")
                                 } label: {
                                     Image(systemName: "trash")
+//                                        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
                                 }
                                 
+                                
                                 Button {
-                                    print("update")
+                                    gotoTask = true
                                 } label: {
                                     Image(systemName: "pencil")
+//                                        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
                                 }
                                 .tint(.green)
+                                .navigationDestination(isPresented: $gotoTask) {
+                                    TaskView()
+                                }
 
                             }
                     }
                 }
                 .listStyle(.plain)
-                
-                
-                
-                //                List(todos[0].tasks) { task in
-                //                    TaskCell(task: task)
-                //                        .listRowBackground(
-                //                            RoundedRectangle(cornerRadius: 16)
-                //                                .fill(.white)
-                //                                .padding(4)
-                //                        )
-                //                        .listRowSeparator(.hidden)
-                //                        .frame(height: 50)
-                //
-                //                }
-                //                .listStyle(.plain)
-                //                .padding([.horizontal], 14)
-                
+
+        
                 Spacer()
             }
-            //            .padding()
+            .navigationDestination(isPresented: $gotoTask) {
+                TaskView()
+            }
+            
         }
     }
 }
