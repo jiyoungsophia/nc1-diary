@@ -35,14 +35,30 @@ struct TodoMainView: View {
                     TaskView()
                 }
                 
-                List(todos) { todo in
-                    TodoMainCell(todos: todo)
-                        .listRowSeparator(.hidden)
-                    
+                List {
+                    ForEach(todos) { todo in
+                        TodoMainCell(todos: todo)
+                            .listRowSeparator(.hidden)
+                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                Button(role: .destructive) {
+                                    print("delete")
+                                } label: {
+                                    Image(systemName: "trash")
+                                }
+                                
+                                Button {
+                                    print("update")
+                                } label: {
+                                    Image(systemName: "pencil")
+                                }
+                                .tint(.green)
+
+                            }
+                    }
                 }
                 .listStyle(.plain)
                 
-            
+                
                 
                 //                List(todos[0].tasks) { task in
                 //                    TaskCell(task: task)
@@ -60,6 +76,7 @@ struct TodoMainView: View {
                 
                 Spacer()
             }
+            //            .padding()
         }
     }
 }
