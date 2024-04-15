@@ -34,10 +34,7 @@ struct TaskView: View {
             .padding()
         }
         .navigationBarTitleDisplayMode(.inline)
-//        .frame(width: UIScreen.main.bounds.width)
         .background(.pink)
-//        .padding(.top, -50)
-//        .ignoresSafeArea()
     }
 }
 

@@ -9,7 +9,6 @@ import SwiftUI
 
 struct TodoMainView: View {
     let todos: [TodoData] = TodoData.sampleData
-    //    @State var tag:Int? = nil
     @State private var addTodo = false
     
     var body: some View {
@@ -21,6 +20,7 @@ struct TodoMainView: View {
                         .scaledToFit()
                         .frame(height: 60)
                     Spacer()
+                    
                     Button{
                         addTodo = true
                     } label: {
@@ -28,20 +28,21 @@ struct TodoMainView: View {
                             .font(.title)
                             .foregroundStyle(.green)
                     }
-
+                    
                 }
+                .padding([.horizontal, .top])
                 .navigationDestination(isPresented: $addTodo) {
                     TaskView()
                 }
                 
-                ForEach(todos) { todo in
-                    //                    NavigationLink(destination: TaskView()) {
+                List(todos) { todo in
                     TodoMainCell(todos: todo)
-                    //                    }
+                        .listRowSeparator(.hidden)
                     
                 }
+                .listStyle(.plain)
                 
-                
+            
                 
                 //                List(todos[0].tasks) { task in
                 //                    TaskCell(task: task)
@@ -59,19 +60,6 @@ struct TodoMainView: View {
                 
                 Spacer()
             }
-            .padding()
-            //            .navigationTitle("TODOTO")
-            //            .navigationBarTitleDisplayMode(.automatic)
-            //            .toolbar {
-            //                ToolbarItem(placement: .topBarTrailing) {
-            //                    Button("New", systemImage: "plus") {
-            //                        NavigationLink(destination: TaskView()) {
-            //
-            //                        }
-            //
-            //                    }
-            //                }
-            //            }
         }
     }
 }
