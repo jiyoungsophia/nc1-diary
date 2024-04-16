@@ -8,20 +8,22 @@
 import SwiftUI
 
 struct TodoMainCell: View {
-    let todos: TodoData
-//    let backgroundColors: [Color] = [.ce, .yellow, .blue]
+    @Binding var todo: TodoData
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(todos.title)
+            Text(todo.title)
                 .font(.title2.bold())
             
-            ForEach(todos.tasks) { task in
-                TaskCell(task: task)
+//            ForEach($todo.tasks, id: \.self) { $task in
+//                TaskCell(task: $task)
+//            }
+            ForEach($todo.tasks) { $task in
+                TaskCell(task: $task)
             }
             
             Divider()
-            Text(todos.createDate)
+            Text(todo.createDate)
         }
         .padding()
         .background(.cellGreen)
@@ -29,6 +31,6 @@ struct TodoMainCell: View {
     }
 }
 
-#Preview {
-    TodoMainCell(todos: TodoData.sampleData[0])
-}
+//#Preview {
+//    TodoMainCell(todo: TodoData.sampleData[0])
+//}

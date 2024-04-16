@@ -10,7 +10,7 @@ import SwiftUI
 // - TODO: task뷰 분기처리
 
 struct TodoMainView: View {
-    let todos: [TodoData] = TodoData.sampleData
+    @State private var todos: [TodoData] = TodoData.sampleData
     @State private var gotoTask = false
     
     var body: some View {
@@ -36,8 +36,8 @@ struct TodoMainView: View {
                 
                 
                 List {
-                    ForEach(todos) { todo in
-                        TodoMainCell(todos: todo)
+                    ForEach($todos) { $todo in
+                        TodoMainCell(todo: $todo)
                             .listRowSeparator(.hidden)
                             .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                                 Button(role: .destructive) {

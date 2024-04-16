@@ -39,8 +39,22 @@
 - view 그리기
 - data 구조 짜기
 
+### 💡 알게 된 것
+- 버튼에 네비게이션 달기
+
 ### 🔨 삽질
 - `navigationTitle` 사용 했을 때, destination에서 title 공간이 그대로 잡히는 문제   
-  - `navigationBarTitleDisplayMode(.automatic)`으로 한 후 destinationView에서 `.inline` 
+  - `navigationBarTitleDisplayMode(.automatic)`으로 한 후 destinationView에서 `.inline`
+
+
+
+## Day6 - 240416
+
+### ✅ 오늘 한 일
+- view 수정
+- data 구조 수정
+
+### 🔨 삽질
+- `State`,`Binding` ,,, and `optional` and cell과 뷰의 관계... etc
 
 

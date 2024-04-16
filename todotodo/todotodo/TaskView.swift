@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct TaskView: View {
+    
+    @State var newMemo: String = ""
+    
     let todos: [TodoData] = TodoData.sampleData
     
     var body: some View {
@@ -15,27 +18,37 @@ struct TaskView: View {
             Text("\(todos[0].createDate)")
                 .foregroundStyle(.gray)
                 .frame(maxWidth: .infinity, alignment: .center)
-            //            TextField(<#T##title: StringProtocol##StringProtocol#>, text: <#T##Binding<String>#>)
-            Text("Untitled")
+            TextField("Untitled", text: $newMemo)
                 .font(.title)
                 .padding()
-
-            
-            List {
-                ForEach(todos[0].tasks) { task in
-                    TaskCell(task: task)
-                        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                            Button(role: .destructive) {
-                                print("delete")
-                            } label: {
-                                Image(systemName: "trash")
-//                                        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-                            }
-
-                        }
+                .onChange(of: newMemo) {
+                    print(newMemo)
                 }
+            
+            
+            if todos[0].tasks != nil {
+                List {
+//                    ForEach(todos[0].tasks ?? []) { task in
+//                        TaskCell(task: task)
+//                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+//                                Button(role: .destructive) {
+//                                    print("delete")
+//                                } label: {
+//                                    Image(systemName: "trash")
+//                                    //                                        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+//                                }
+//                                
+//                            }
+//                    }
+                }
+                .listStyle(.plain)
+            } else {
+                Text("No Tasks")
+                    .font(.title2.bold())
+                    .foregroundStyle(.cellDarkGreen)
+                    .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: .infinity)
             }
-            .listStyle(.plain)
+            
             
             Spacer()
             Button("Add New Task", systemImage: "plus.circle.fill", action: {

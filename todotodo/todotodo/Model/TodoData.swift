@@ -8,24 +8,23 @@
 import Foundation
 
 struct TodoData: Identifiable {
-    let id: UUID = UUID()
+    var id = UUID()
     var createDate: String  // Date()
-    var title: String
-    var tasks: [Task]
+    var title: String // ?? Untitled
+    var tasks: [Task] = []
     //    var isPinned: Bool
 }
 
-extension TodoData {
-    struct Task: Identifiable {
-        let id: UUID = UUID()
-        var memo: String
-        var completeDate: String? // Date()
-        var isCompleted: Bool
-    }
+struct Task: Identifiable {
+    var id = UUID()
+    var memo: String?
+    var completeDate: String? // Date()
+    var isCompleted: Bool
 }
 
+
 extension TodoData {
-    static let sampleData: [TodoData] =
+    static var sampleData: [TodoData] =
     [
         TodoData(createDate: "4월 15일", title: "To Buy List", tasks: [
             Task(memo: "yogurt", completeDate: "4월 16일", isCompleted: true),
