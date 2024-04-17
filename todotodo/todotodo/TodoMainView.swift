@@ -26,30 +26,15 @@ struct TodoMainView: View {
                         .frame(height: 60)
                     Spacer()
                     
-                    NavigationLink {
+                    NavigationLink { // 버튼 대신
                         TaskView(cellType: .addTodo, todo: $newTodo)
                     } label: {
                         Image(systemName: "plus")
                             .font(.title)
                             .foregroundStyle(.green)
                     }
-
-//                    Button{
-//                        gotoNewTask = true
-//                        print("addtodo")
-//                        
-//                    } label: {
-//                        Image(systemName: "plus")
-//                            .font(.title)
-//                            .foregroundStyle(.green)
-//                    }
                 }
                 .padding([.horizontal, .top])
-                
-                // - FIXME: 분기처리(데이터 있는 화면)
-//                .navigationDestination(isPresented: $gotoNewTask) {
-//                    TaskView(cellType: .addTodo, todo: $newTodo)
-//                }
                 
                 List {
                     ForEach($todos) { $todo in
@@ -62,31 +47,15 @@ struct TodoMainView: View {
                                     Image(systemName: "trash")
                                 }
                                 
-                                NavigationLink {
-                                    TaskView(cellType: .todo, todo: $todo)
+                                NavigationLink { // 버튼 대신
+                                    TaskView(cellType: .editTodo, todo: $todo)
                                 } label: {
                                     Image(systemName: "pencil")
                                 }
-
-//                                Button {
-//                                    gotoEditTask = true
-//                                    print("todo")
-//                                    
-//                                } label: {
-//                                    Image(systemName: "pencil")
-//                                }
-//                                .tint(.green)
-                                
-                              // - FIXME: 분기처리(데이터 있는 화면)
-//                                .navigationDestination(isPresented: $gotoEditTask) {
-//                                    TaskView(cellType: .todo, todo: $todo)
-//                                }
-                                
                             }
                     }
                 }
                 .listStyle(.plain)
-                
                 
                 Spacer()
             }

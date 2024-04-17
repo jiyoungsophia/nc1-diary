@@ -8,24 +8,25 @@
 import SwiftUI
 
 enum CellType {
-    case todo
+    case editTodo
     case addTodo
 }
 
-// - FIXME: 제목만 있고 task 없는 경우
+
 struct TaskView: View {
     
-    var cellType: CellType = .todo
+    var cellType: CellType = .editTodo
     @State var newMemo: String = ""
+    @State private var newTodo = TodoData(createDate: "\(DateFormatter())")
     
-    @Binding var todo: TodoData 
+    @Binding var todo: TodoData
     
     var body: some View {
         VStack(alignment: .leading) {
             
             switch cellType {
                 
-            case .todo:
+            case .editTodo:
                 Text("\(todo.createDate)")
                     .foregroundStyle(.gray)
                     .frame(maxWidth: .infinity, alignment: .center)
@@ -35,9 +36,12 @@ struct TaskView: View {
                     .onChange(of: newMemo) {
                         print(newMemo)
                     }
+                
+                // - TODO: 제목만 있고 task 없는 경우
                 List {
+                    // - FIXME: toggle 안눌림
                     ForEach($todo.tasks) { $task in
-                        TaskCell(task: $task)
+                        TaskCell(cellType: .editTodo, task: $task)
                             .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                                 Button(role: .destructive) {
                                     print("delete")
@@ -51,29 +55,43 @@ struct TaskView: View {
                 .listStyle(.plain)
                 
             case .addTodo:
-                Text("현재날짜")
+                Text("\(dateFormatter())")
                     .foregroundStyle(.gray)
                     .frame(maxWidth: .infinity, alignment: .center)
-                TextField("Untitled", text: $newMemo)
+                // -FIXME: default값 placeholder로 바꾸기
+                TextField("Untitled", text: $newTodo.title)
                     .font(.title)
                     .padding()
-                    .onChange(of: newMemo) {
-                        print(newMemo)
+                    .onChange(of: newTodo.title) {
+                        // -TODO: 저장~
+                        print(newTodo.title)
                     }
-                Text("No Tasks")
-                    .font(.title2.bold())
-                    .foregroundStyle(.cellDarkGreen)
-                    .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: .infinity)
+                List {
+                    ForEach($newTodo.tasks) { $task in
+                        TaskCell(cellType: .addTodo, task: $task)
+                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                Button(role: .destructive) {
+                                    print("delete")
+                                } label: {
+                                    Image(systemName: "trash")
+                                }
+
+                            }
+                    }
+                }
+                .listStyle(.plain)
+//                Text("No Tasks")
+//                    .font(.title2.bold())
+//                    .foregroundStyle(.cellDarkGreen)
+//                    .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: .infinity)
+                
                 
             }
             
-            
-            
 
-            
-            
             Spacer()
             Button("Add New Task", systemImage: "plus.circle.fill", action: {
+                addTask()
                 print("add")
             })
             .font(.title3.bold())
@@ -81,6 +99,18 @@ struct TaskView: View {
             .padding()
         }
         .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    func dateFormatter() -> String {
+        var formatter = DateFormatter()
+        formatter.dateFormat = "MM월 dd일"
+        var current = formatter.string(from: Date())
+        return current
+    }
+    
+    func addTask() {
+        let newTask = Task()
+        newTodo.tasks.append(newTask)
     }
 }
 

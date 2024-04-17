@@ -10,7 +10,7 @@ import Foundation
 struct TodoData: Identifiable {
     var id = UUID()
     var createDate: String  // Date()
-    var title: String // ?? Untitled
+    var title: String = "Untitled"
     var tasks: [Task] = []
     //    var isPinned: Bool
 }
@@ -19,7 +19,7 @@ struct Task: Identifiable {
     var id = UUID()
     var memo: String?
     var completeDate: String? // Date()
-    var isCompleted: Bool
+    var isCompleted: Bool = false
 }
 
 
