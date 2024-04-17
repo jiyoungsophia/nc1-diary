@@ -7,47 +7,69 @@
 
 import SwiftUI
 
+enum CellType {
+    case todo
+    case addTodo
+}
+
+// - FIXME: 제목만 있고 task 없는 경우
 struct TaskView: View {
     
+    var cellType: CellType = .todo
     @State var newMemo: String = ""
     
-    let todos: [TodoData] = TodoData.sampleData
+    @Binding var todo: TodoData 
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text("\(todos[0].createDate)")
-                .foregroundStyle(.gray)
-                .frame(maxWidth: .infinity, alignment: .center)
-            TextField("Untitled", text: $newMemo)
-                .font(.title)
-                .padding()
-                .onChange(of: newMemo) {
-                    print(newMemo)
-                }
             
-            
-            if todos[0].tasks != nil {
+            switch cellType {
+                
+            case .todo:
+                Text("\(todo.createDate)")
+                    .foregroundStyle(.gray)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                TextField("", text: $todo.title)
+                    .font(.title)
+                    .padding()
+                    .onChange(of: newMemo) {
+                        print(newMemo)
+                    }
                 List {
-//                    ForEach(todos[0].tasks ?? []) { task in
-//                        TaskCell(task: task)
-//                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-//                                Button(role: .destructive) {
-//                                    print("delete")
-//                                } label: {
-//                                    Image(systemName: "trash")
-//                                    //                                        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-//                                }
-//                                
-//                            }
-//                    }
+                    ForEach($todo.tasks) { $task in
+                        TaskCell(task: $task)
+                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                Button(role: .destructive) {
+                                    print("delete")
+                                } label: {
+                                    Image(systemName: "trash")
+                                }
+
+                            }
+                    }
                 }
                 .listStyle(.plain)
-            } else {
+                
+            case .addTodo:
+                Text("현재날짜")
+                    .foregroundStyle(.gray)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                TextField("Untitled", text: $newMemo)
+                    .font(.title)
+                    .padding()
+                    .onChange(of: newMemo) {
+                        print(newMemo)
+                    }
                 Text("No Tasks")
                     .font(.title2.bold())
                     .foregroundStyle(.cellDarkGreen)
                     .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: .infinity)
+                
             }
+            
+            
+            
+
             
             
             Spacer()
@@ -62,6 +84,6 @@ struct TaskView: View {
     }
 }
 
-#Preview {
-    TaskView()
-}
+//#Preview {
+//    TaskView()
+//}

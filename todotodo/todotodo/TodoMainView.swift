@@ -11,7 +11,10 @@ import SwiftUI
 
 struct TodoMainView: View {
     @State private var todos: [TodoData] = TodoData.sampleData
-    @State private var gotoTask = false
+    @State private var gotoNewTask = false
+    @State private var gotoEditTask = false
+    
+    @State private var newTodo: TodoData = TodoData(createDate: "", title: "")
     
     var body: some View {
         NavigationStack {
@@ -23,17 +26,30 @@ struct TodoMainView: View {
                         .frame(height: 60)
                     Spacer()
                     
-                    Button{
-                        gotoTask = true
+                    NavigationLink {
+                        TaskView(cellType: .addTodo, todo: $newTodo)
                     } label: {
                         Image(systemName: "plus")
                             .font(.title)
                             .foregroundStyle(.green)
                     }
-                    
+
+//                    Button{
+//                        gotoNewTask = true
+//                        print("addtodo")
+//                        
+//                    } label: {
+//                        Image(systemName: "plus")
+//                            .font(.title)
+//                            .foregroundStyle(.green)
+//                    }
                 }
                 .padding([.horizontal, .top])
                 
+                // - FIXME: 분기처리(데이터 있는 화면)
+//                .navigationDestination(isPresented: $gotoNewTask) {
+//                    TaskView(cellType: .addTodo, todo: $newTodo)
+//                }
                 
                 List {
                     ForEach($todos) { $todo in
@@ -44,32 +60,37 @@ struct TodoMainView: View {
                                     print("delete")
                                 } label: {
                                     Image(systemName: "trash")
-//                                        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
                                 }
                                 
-                                
-                                Button {
-                                    gotoTask = true
+                                NavigationLink {
+                                    TaskView(cellType: .todo, todo: $todo)
                                 } label: {
                                     Image(systemName: "pencil")
-//                                        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-                                }
-                                .tint(.green)
-                                .navigationDestination(isPresented: $gotoTask) {
-                                    TaskView()
                                 }
 
+//                                Button {
+//                                    gotoEditTask = true
+//                                    print("todo")
+//                                    
+//                                } label: {
+//                                    Image(systemName: "pencil")
+//                                }
+//                                .tint(.green)
+                                
+                              // - FIXME: 분기처리(데이터 있는 화면)
+//                                .navigationDestination(isPresented: $gotoEditTask) {
+//                                    TaskView(cellType: .todo, todo: $todo)
+//                                }
+                                
                             }
                     }
                 }
                 .listStyle(.plain)
-
-        
+                
+                
                 Spacer()
             }
-            .navigationDestination(isPresented: $gotoTask) {
-                TaskView()
-            }
+            
             
         }
     }

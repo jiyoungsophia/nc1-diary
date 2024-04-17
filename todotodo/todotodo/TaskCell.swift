@@ -7,11 +7,12 @@
 
 import SwiftUI
 
+//enum CellType {
+//    case todo
+//    case addTodo
+//}
 struct TaskCell: View {
-    enum CellType {
-        case todo
-        case addTodo
-    }
+    
     var cellType: CellType = .todo
     @Binding var task: Task
     
@@ -22,8 +23,8 @@ struct TaskCell: View {
     var body: some View {
         HStack {
             
-            
             Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
+            
             switch cellType {
             case .todo:
                 Text(task.memo ?? "")
@@ -31,9 +32,7 @@ struct TaskCell: View {
                 TextField("\(task.memo ?? "")", text: $newTask)
             }
             
-            //            Text("\(task.memo)")
             Spacer()
-            //            Text("\(task[0].completeDate)")
         }
         .onTapGesture {
             task.isCompleted.toggle()

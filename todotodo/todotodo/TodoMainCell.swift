@@ -15,9 +15,6 @@ struct TodoMainCell: View {
             Text(todo.title)
                 .font(.title2.bold())
             
-//            ForEach($todo.tasks, id: \.self) { $task in
-//                TaskCell(task: $task)
-//            }
             ForEach($todo.tasks) { $task in
                 TaskCell(task: $task)
             }
