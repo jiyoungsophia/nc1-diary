@@ -19,7 +19,9 @@ struct TaskView: View {
     @State var newMemo: String = ""
     @State private var newTodo = TodoData(createDate: "\(DateFormatter())")
     
+    @Binding var todos: [TodoData]
     @Binding var todo: TodoData
+    
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -37,19 +39,24 @@ struct TaskView: View {
                         print(newMemo)
                     }
                 
-                // - TODO: 제목만 있고 task 없는 경우
                 List {
-                    // - FIXME: toggle 안눌림
                     ForEach($todo.tasks) { $task in
-                        TaskCell(cellType: .editTodo, task: $task)
-                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                                Button(role: .destructive) {
-                                    print("delete")
-                                } label: {
-                                    Image(systemName: "trash")
-                                }
-
+                        TaskCell(
+                            cellType: .editTodo,
+                            task: $task, 
+                            tappedAction: { task in
+                                todo.tasks.append(task)
                             }
+                        )
+                        
+                        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                            Button(role: .destructive) {
+                                print("delete")
+                            } label: {
+                                Image(systemName: "trash")
+                            }
+                            
+                        }
                     }
                 }
                 .listStyle(.plain)
@@ -58,37 +65,48 @@ struct TaskView: View {
                 Text("\(dateFormatter())")
                     .foregroundStyle(.gray)
                     .frame(maxWidth: .infinity, alignment: .center)
-                // -FIXME: default값 placeholder로 바꾸기
+                // TODO: default값 placeholder로 바꾸기
                 TextField("Untitled", text: $newTodo.title)
                     .font(.title)
                     .padding()
                     .onChange(of: newTodo.title) {
-                        // -TODO: 저장~
                         print(newTodo.title)
                     }
                 List {
                     ForEach($newTodo.tasks) { $task in
-                        TaskCell(cellType: .addTodo, task: $task)
-                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                                Button(role: .destructive) {
-                                    print("delete")
-                                } label: {
-                                    Image(systemName: "trash")
-                                }
-
+                        TaskCell(
+                            cellType: .addTodo,
+                            task: $task,
+                            tappedAction: { newTask in
+                                
+                                //
+                                let idList = newTodo.tasks.map{ $0.id }
+                                guard let findIdx = idList.firstIndex(of: newTask.id) else { return }
+                                newTodo.tasks[findIdx] = newTask
+//                                newTodo.tasks.append(newTask)
                             }
+                        )
+                        
+//                        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+//                            Button(role: .destructive) {
+//                                print("delete")
+//                                
+//                            } label: {
+//                                Image(systemName: "trash")
+//                            }
+//                        }
+                    }
+                    .onDelete { offsets in
+                        todo.tasks.remove(atOffsets: offsets)
+                        print(todo.tasks)
+                        // FIXME: 삭제 안됨..ㅎ
                     }
                 }
                 .listStyle(.plain)
-//                Text("No Tasks")
-//                    .font(.title2.bold())
-//                    .foregroundStyle(.cellDarkGreen)
-//                    .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: .infinity)
-                
                 
             }
             
-
+            
             Spacer()
             Button("Add New Task", systemImage: "plus.circle.fill", action: {
                 addTask()
@@ -99,18 +117,54 @@ struct TaskView: View {
             .padding()
         }
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            Button {
+                // TODO: - save
+//                let newTodo = TodoData(createDate: dateFormatter(), title: newTodo.title, tasks: newTodo.tasks)
+                todos.append(newTodo)
+                print(newTodo)
+                saveTask(todos)
+            } label: {
+                Text("저장")
+            }
+        }
     }
     
     func dateFormatter() -> String {
-        var formatter = DateFormatter()
+        let formatter = DateFormatter()
         formatter.dateFormat = "MM월 dd일"
-        var current = formatter.string(from: Date())
+        let current = formatter.string(from: Date())
         return current
     }
     
+    
+    // MARK: - json CRUD
+    
+
     func addTask() {
         let newTask = Task()
         newTodo.tasks.append(newTask)
+    }
+    
+    
+    // FIXME: 재사용이하고시퍼요 delete하고 다시 save 해줘야,,?하지 않나,,? 근데 매개변수타입이 달라,,
+    func saveTask(_ data: [TodoData]) {
+        let fileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("todos.json")
+        print(fileURL)
+        if let data = try? JSONEncoder().encode(data) {
+            try? data.write(to: fileURL)
+        }
+    }
+    
+    
+    
+    func deleteTask() {
+        
+    }
+
+    
+    func getDocumentsDirectory() -> URL {
+        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
     }
 }
 

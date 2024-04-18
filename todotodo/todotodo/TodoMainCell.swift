@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TodoMainCell: View {
     @Binding var todo: TodoData
+    //    @Binding var tasks: [Task]
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -16,7 +17,9 @@ struct TodoMainCell: View {
                 .font(.title2.bold())
             
             ForEach($todo.tasks) { $task in
-                TaskCell(task: $task)
+                TaskCell(task: $task, tappedAction: { newTask in
+                    todo.tasks.append(newTask)
+                })
             }
             
             Divider()

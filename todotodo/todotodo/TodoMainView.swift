@@ -27,7 +27,7 @@ struct TodoMainView: View {
                     Spacer()
                     
                     NavigationLink { // 버튼 대신
-                        TaskView(cellType: .addTodo, todo: $newTodo)
+                        TaskView(cellType: .addTodo, todos: $todos, todo: $newTodo)
                     } label: {
                         Image(systemName: "plus")
                             .font(.title)
@@ -48,7 +48,7 @@ struct TodoMainView: View {
                                 }
                                 
                                 NavigationLink { // 버튼 대신
-                                    TaskView(cellType: .editTodo, todo: $todo)
+                                    TaskView(cellType: .editTodo, todos: $todos, todo: $newTodo)
                                 } label: {
                                     Image(systemName: "pencil")
                                 }
@@ -62,6 +62,20 @@ struct TodoMainView: View {
             
             
         }
+        
+//        func loadTask() {
+//            let fileURL = getDocumentsDirectory().appendingPathComponent("todos.json")
+//            if let data = try? Data(contentsOf: fileURL) {
+//                if let decoded = try? JSONDecoder().decode([Person].self, from: data) {
+//                    self.people = decoded
+//                }
+//            }
+//        }
+        
+//        func getDocumentsDirectory() -> URL {
+//            FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+//        }
+        
     }
 }
 

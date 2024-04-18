@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TodoData: Identifiable {
+struct TodoData: Codable, Identifiable {
     var id = UUID()
     var createDate: String  // Date()
     var title: String = "Untitled"
@@ -15,11 +15,18 @@ struct TodoData: Identifiable {
     //    var isPinned: Bool
 }
 
-struct Task: Identifiable {
+struct Task: Codable, Identifiable {
     var id = UUID()
     var memo: String?
     var completeDate: String? // Date()
-    var isCompleted: Bool = false
+    var isCompleted: Bool
+    
+    init(id: UUID = UUID(), memo: String? = nil, completeDate: String? = nil, isCompleted: Bool = false) {
+        self.id = id
+        self.memo = memo
+        self.completeDate = completeDate
+        self.isCompleted = isCompleted
+    }
 }
 
 
