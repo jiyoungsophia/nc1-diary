@@ -54,10 +54,19 @@ struct TodoMainView: View {
                                 }
                             }
                     }
+                    // MARK: 확인하기~,,
+                    .onDelete { offsets in
+                        todos.remove(atOffsets: offsets)
+                    }
                 }
                 .listStyle(.plain)
                 
                 Spacer()
+            }
+            .onAppear {
+                // TODO:  newTODO reset
+                print(todos)
+//                print(todos)
             }
             
             

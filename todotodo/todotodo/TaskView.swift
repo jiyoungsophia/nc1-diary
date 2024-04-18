@@ -14,10 +14,10 @@ enum CellType {
 
 
 struct TaskView: View {
-    
+    @Environment(\.dismiss) var dismiss
     var cellType: CellType = .editTodo
     @State var newMemo: String = ""
-    @State private var newTodo = TodoData(createDate: "\(DateFormatter())")
+//    @State private var newTodo = TodoData(createDate: "\(DateFormatter())")
     
     @Binding var todos: [TodoData]
     @Binding var todo: TodoData
@@ -43,10 +43,7 @@ struct TaskView: View {
                     ForEach($todo.tasks) { $task in
                         TaskCell(
                             cellType: .editTodo,
-                            task: $task, 
-                            tappedAction: { task in
-                                todo.tasks.append(task)
-                            }
+                            task: $task
                         )
                         
                         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
@@ -66,40 +63,25 @@ struct TaskView: View {
                     .foregroundStyle(.gray)
                     .frame(maxWidth: .infinity, alignment: .center)
                 // TODO: default값 placeholder로 바꾸기
-                TextField("Untitled", text: $newTodo.title)
+                TextField("Untitled", text: $todo.title)
                     .font(.title)
                     .padding()
-                    .onChange(of: newTodo.title) {
-                        print(newTodo.title)
+                    .onChange(of: todo.title) {
+                        print(todo.title)
                     }
                 List {
-                    ForEach($newTodo.tasks) { $task in
+                    ForEach($todo.tasks) { $task in
                         TaskCell(
                             cellType: .addTodo,
-                            task: $task,
-                            tappedAction: { newTask in
-                                
-                                //
-                                let idList = newTodo.tasks.map{ $0.id }
-                                guard let findIdx = idList.firstIndex(of: newTask.id) else { return }
-                                newTodo.tasks[findIdx] = newTask
-//                                newTodo.tasks.append(newTask)
-                            }
+                            task: $task
                         )
-                        
-//                        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-//                            Button(role: .destructive) {
-//                                print("delete")
-//                                
-//                            } label: {
-//                                Image(systemName: "trash")
-//                            }
-//                        }
                     }
                     .onDelete { offsets in
                         todo.tasks.remove(atOffsets: offsets)
                         print(todo.tasks)
-                        // FIXME: 삭제 안됨..ㅎ
+                        
+                        // FIXME: 바인딩처리해줫으니까 그냥 이렇게 하면 되나??
+//                        saveTask(todos)
                     }
                 }
                 .listStyle(.plain)
@@ -119,11 +101,12 @@ struct TaskView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             Button {
-                // TODO: - save
-//                let newTodo = TodoData(createDate: dateFormatter(), title: newTodo.title, tasks: newTodo.tasks)
-                todos.append(newTodo)
-                print(newTodo)
-                saveTask(todos)
+                todos.append(todo)
+                print(todo)
+//                saveTask(todos)
+                // MARK: newTodo reset
+                todo = TodoData(createDate: "", title: "")
+//                dismiss()
             } label: {
                 Text("저장")
             }
@@ -143,29 +126,20 @@ struct TaskView: View {
 
     func addTask() {
         let newTask = Task()
-        newTodo.tasks.append(newTask)
+        todo.tasks.append(newTask)
     }
     
     
     // FIXME: 재사용이하고시퍼요 delete하고 다시 save 해줘야,,?하지 않나,,? 근데 매개변수타입이 달라,,
-    func saveTask(_ data: [TodoData]) {
-        let fileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("todos.json")
-        print(fileURL)
-        if let data = try? JSONEncoder().encode(data) {
-            try? data.write(to: fileURL)
-        }
-    }
+//    func saveTask(_ data: [TodoData]) {
+//        let fileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("todos.json")
+//        print(fileURL)
+//        if let data = try? JSONEncoder().encode(data) {
+//            try? data.write(to: fileURL)
+//        }
+//    }
     
-    
-    
-    func deleteTask() {
-        
-    }
 
-    
-    func getDocumentsDirectory() -> URL {
-        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-    }
 }
 
 //#Preview {

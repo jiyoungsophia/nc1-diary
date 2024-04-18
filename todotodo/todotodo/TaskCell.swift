@@ -12,9 +12,7 @@ import SwiftUI
 struct TaskCell: View {
     
     var cellType: CellType = .editTodo
-//    @Binding var tasks: [Task] // Binding<[Task]>
     @Binding var task: Task // Binding<Task>
-    let tappedAction: (Task) -> Void
     
     @State var newMemo: String = ""
     
@@ -26,19 +24,15 @@ struct TaskCell: View {
                     task.isCompleted.toggle()
                 }
             
-         
+
             switch cellType {
             case .editTodo:
-                Text(task.memo ?? "")
+                Text(task.memo)
                     
                 
             case .addTodo:
-                TextField("", text: $newMemo)
-                    .onSubmit { // - FIXME: 마지막에 엔터 안치면 안들어가지는데 다른 좋은 방법이 있는지??? 저장버튼없이
-                        let newMemo = Task(id: task.id, memo: newMemo)
-                        tappedAction(newMemo)
-                        print(newMemo)
-                    }
+                TextField("", text: $task.memo)
+
             }
             
             Spacer()

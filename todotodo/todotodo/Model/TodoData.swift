@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TodoData: Codable, Identifiable {
+struct TodoData: Identifiable {
     var id = UUID()
     var createDate: String  // Date()
     var title: String = "Untitled"
@@ -15,13 +15,13 @@ struct TodoData: Codable, Identifiable {
     //    var isPinned: Bool
 }
 
-struct Task: Codable, Identifiable {
+struct Task: Identifiable {
     var id = UUID()
-    var memo: String?
+    var memo: String
     var completeDate: String? // Date()
     var isCompleted: Bool
     
-    init(id: UUID = UUID(), memo: String? = nil, completeDate: String? = nil, isCompleted: Bool = false) {
+    init(id: UUID = UUID(), memo: String = "", completeDate: String? = nil, isCompleted: Bool = false) {
         self.id = id
         self.memo = memo
         self.completeDate = completeDate
@@ -33,21 +33,21 @@ struct Task: Codable, Identifiable {
 extension TodoData {
     static var sampleData: [TodoData] =
     [
-        TodoData(createDate: "4월 15일", title: "To Buy List", tasks: [
-            Task(memo: "yogurt", completeDate: "4월 16일", isCompleted: true),
-            Task(memo: "bread", isCompleted: false),
-            Task(memo: "peanut butter", isCompleted: false)
-        ]),
-        TodoData(createDate: "4월 15일", title: "To Study List", tasks: [
-            Task(memo: "study0", completeDate: "4월 16일", isCompleted: true),
-            Task(memo: "study1", completeDate: "4월 16일",isCompleted: true),
-            Task(memo: "study2", isCompleted: false)
-        ]),
-        TodoData(createDate: "4월 15일", title: "To Listen List", tasks: [
-            Task(memo: "listen0", completeDate: "4월 16일", isCompleted: true),
-            Task(memo: "listen1", isCompleted: false),
-            Task(memo: "listen2", completeDate: "4월 16일", isCompleted: true)
-        ]),
+//        TodoData(createDate: "4월 15일", title: "To Buy List", tasks: [
+//            Task(memo: "yogurt", completeDate: "4월 16일", isCompleted: true),
+//            Task(memo: "bread", isCompleted: false),
+//            Task(memo: "peanut butter", isCompleted: false)
+//        ]),
+//        TodoData(createDate: "4월 15일", title: "To Study List", tasks: [
+//            Task(memo: "study0", completeDate: "4월 16일", isCompleted: true),
+//            Task(memo: "study1", completeDate: "4월 16일",isCompleted: true),
+//            Task(memo: "study2", isCompleted: false)
+//        ]),
+//        TodoData(createDate: "4월 15일", title: "To Listen List", tasks: [
+//            Task(memo: "listen0", completeDate: "4월 16일", isCompleted: true),
+//            Task(memo: "listen1", isCompleted: false),
+//            Task(memo: "listen2", completeDate: "4월 16일", isCompleted: true)
+//        ]),
         
     ]
 }
