@@ -17,14 +17,37 @@ struct TaskView: View {
     @Environment(\.dismiss) var dismiss
     var cellType: CellType = .editTodo
     @State var newMemo: String = ""
-//    @State private var newTodo = TodoData(createDate: "\(DateFormatter())")
     
     @Binding var todos: [TodoData]
     @Binding var todo: TodoData
     
     
     var body: some View {
+        
         VStack(alignment: .leading) {
+            HStack {
+                Button {
+                    dismiss()
+                } label: {
+                    Text("Cancel")
+                }
+                
+                Spacer()
+                
+                Button {
+                    todos.append(todo)
+                    print(todo)
+                    //                saveTask(todos)
+                    // MARK: newTodo reset
+                    //                    todo = TodoData(createDate: "", title: "")
+                    
+                    dismiss()
+                } label: {
+                    Text("Save")
+                }
+            }
+            .padding()
+            
             
             switch cellType {
                 
@@ -98,19 +121,19 @@ struct TaskView: View {
             .foregroundStyle(.green)
             .padding()
         }
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            Button {
-                todos.append(todo)
-                print(todo)
-//                saveTask(todos)
-                // MARK: newTodo reset
-                todo = TodoData(createDate: "", title: "")
-//                dismiss()
-            } label: {
-                Text("저장")
-            }
-        }
+        //        .navigationBarTitleDisplayMode(.inline)
+        //        .toolbar {
+        //            Button {
+        //                todos.append(todo)
+        //                print(todo)
+        //                //                saveTask(todos)
+        //                // MARK: newTodo reset
+        //                todo = TodoData(createDate: "", title: "")
+        //                //                dismiss()
+        //            } label: {
+        //                Text("저장")
+        //            }
+        //        }
     }
     
     func dateFormatter() -> String {
@@ -123,7 +146,7 @@ struct TaskView: View {
     
     // MARK: - json CRUD
     
-
+    
     func addTask() {
         let newTask = Task()
         todo.tasks.append(newTask)
@@ -131,16 +154,16 @@ struct TaskView: View {
     
     
     // FIXME: 재사용이하고시퍼요 delete하고 다시 save 해줘야,,?하지 않나,,? 근데 매개변수타입이 달라,,
-//    func saveTask(_ data: [TodoData]) {
-//        let fileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("todos.json")
-//        print(fileURL)
-//        if let data = try? JSONEncoder().encode(data) {
-//            try? data.write(to: fileURL)
-//        }
-//    }
+    //    func saveTask(_ data: [TodoData]) {
+    //        let fileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("todos.json")
+    //        print(fileURL)
+    //        if let data = try? JSONEncoder().encode(data) {
+    //            try? data.write(to: fileURL)
+    //        }
+    //    }
     
-
 }
+
 
 //#Preview {
 //    TaskView()

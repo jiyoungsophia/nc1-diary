@@ -23,12 +23,10 @@ struct TaskCell: View {
                 .onTapGesture {
                     task.isCompleted.toggle()
                 }
-            
 
             switch cellType {
             case .editTodo:
                 Text(task.memo)
-                    
                 
             case .addTodo:
                 TextField("", text: $task.memo)
